@@ -3,6 +3,7 @@ from disnake.ext import commands
 from disnake.ui import View, button
 import datetime
 
+
 class Ban(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -17,8 +18,8 @@ class Ban(commands.Cog):
             return
 
         embed = disnake.Embed(title="Пользователь забанен",
-                               description=f"{member.mention} забанен",
-                               color=disnake.Color.red())
+                              description=f"{member.mention} забанен",
+                              color=disnake.Color.red())
         embed.add_field(name="Причина", value=reason)
         embed.set_footer(text=f"Забанил: {interaction.author.display_name}")
 
@@ -29,6 +30,7 @@ class Ban(commands.Cog):
 
         view = BanView(member)
         await msg.edit(content="", view=view)
+
 
 class BanView(View):
     def __init__(self, member: disnake.Member):
@@ -44,6 +46,7 @@ class BanView(View):
             await interaction.response.send_message("Ошибка: сервер Discord не отвечает", ephemeral=True)
             return
         await interaction.message.delete()
+
 
 def setup(bot):
     bot.add_cog(Ban(bot))

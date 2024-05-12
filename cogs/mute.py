@@ -3,6 +3,7 @@ from disnake.ext import commands
 import datetime
 from disnake.ui import View, button
 
+
 class Timeout(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -20,11 +21,13 @@ class Timeout(commands.Cog):
             return
 
         embed = disnake.Embed(title="Пользователь замьючен",
-                               description=f"{member.mention} замьючен на {time} минут",
-                               color=disnake.Color.red())
+                              description=f"{member.mention} замьючен на {time} минут",
+                              color=disnake.Color.red())
         embed.add_field(name="Причина", value=reason)
-        embed.add_field(name="Дата и время выдачи мута", value=timeout_start.strftime("`%Y-%m-%d %H:%M:%S`"), inline=False)
-        embed.add_field(name="Дата и время окончания мута", value=timeout_end.strftime("`%Y-%m-%d %H:%M:%S`"), inline=False)
+        embed.add_field(name="Дата и время выдачи мута", value=timeout_start.strftime("`%Y-%m-%d %H:%M:%S`"),
+                        inline=False)
+        embed.add_field(name="Дата и время окончания мута", value=timeout_end.strftime("`%Y-%m-%d %H:%M:%S`"),
+                        inline=False)
         embed.set_footer(text=f"Выдал мут: {interaction.author.display_name}")
 
         await interaction.response.send_message(f"Мут {member} успешно выдан.", ephemeral=True)
@@ -36,10 +39,13 @@ class Timeout(commands.Cog):
         await msg.edit(content="", view=view)
 
         try:
-            interaction_wait = await self.bot.wait_for("message_interaction", check=lambda i: i.message.id == msg.id, timeout=int(time)*1000000000000000000000000000)
+            interaction_wait = await self.bot.wait_for("message_interaction", check=lambda i: i.message.id == msg.id,
+                                                       timeout=int(time) * 1000000000000000000000000000)
             await msg.delete()
         except TimeoutError:
             pass
+
+
 class TimeoutView(View):
     def __init__(self, member: disnake.Member):
         super().__init__(timeout=None)
@@ -53,6 +59,7 @@ class TimeoutView(View):
         except disnake.HTTPException:
             await interaction.response.send_message("Ошибка: сервер Discord не отвечает", ephemeral=True)
             return
+
 
 def setup(bot):
     bot.add_cog(Timeout(bot))
